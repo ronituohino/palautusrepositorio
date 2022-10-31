@@ -1,5 +1,6 @@
 import unittest
 from statistics import Statistics
+from statistics import SortBy
 from player import Player
 
 class PlayerReaderStub:
@@ -32,12 +33,27 @@ class TestStatistics(unittest.TestCase):
         self.assertEqual(players[2].name, "Gretzky")
 
     def test_paras_pelaaja(self):
-        player = self.statistics.top(1)[0]
+        player = self.statistics.top(3)[0]
         self.assertEqual(player.name, "Gretzky")
 
     def test_etsi_pelaaja_ei_tulosta(self):
         self.assertEqual(self.statistics.search("Kucherov"), None)
 
-    # def test_parhaat_pelaajat_ylivuoto(self):
-    #    players = self.statistics.top(7)
-    #    self.assertEqual(players, [])
+    def test_paras_pelaaja_points(self):
+        player1 = self.statistics.top(3, SortBy.POINTS)[0]
+        player2 = self.statistics.top(3)[0]
+        self.assertEqual(player1.name, player2.name)
+        self.assertEqual(player1.name, "Gretzky")
+
+    def test_paras_pelaaja_goals(self):
+        player = self.statistics.top(3, SortBy.GOALS)[0]
+        self.assertEqual(player.name, "Lemieux")
+
+    def test_paras_pelaaja_assists(self):
+        # myös paras pelaaja
+        player1 = self.statistics.top(3, SortBy.ASSISTS)[0]
+        self.assertEqual(player1.name, "Gretzky")
+
+        # eri kuin toiseksi paras pelaaja pisteiden perusteella
+        player2 = self.statistics.top(3, SortBy.ASSISTS)[1]
+        self.assertEqual(player2.name, "Yzerman")
