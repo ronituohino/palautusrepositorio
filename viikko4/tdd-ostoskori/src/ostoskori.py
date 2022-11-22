@@ -25,5 +25,5 @@ class Ostoskori:
         pass
         # tyhjentää ostoskorin
 
-    def ostokset(self):
+    def ostokset(self) -> list[Ostos]:
         return self.ostos_list
