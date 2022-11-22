@@ -3,19 +3,21 @@ from ostos import Ostos
 
 
 class Ostoskori:
-    def __init__(self, tuotteet: list[Tuote] = []):
-        self.ostos_list = []
-        for t in tuotteet:
-            self.ostos_list.append(Ostos(t))
+    def __init__(self):
+        self._ostokset = {}
 
     def tavaroita_korissa(self):
-        return len(self.ostos_list)
+        return sum(ostos.lukumaara() for ostos in list(self._ostokset.values()))
 
     def hinta(self):
-        return sum(ostos.hinta() for ostos in self.ostos_list)
+        return sum(ostos.hinta() for ostos in list(self._ostokset.values()))
 
     def lisaa_tuote(self, lisattava: Tuote):
-        self.ostos_list.append(Ostos(lisattava))
+        nimi = lisattava.nimi()
+        if nimi in self._ostokset:
+            self._ostokset[nimi].muuta_lukumaaraa(1)
+        else:
+            self._ostokset[nimi] = Ostos(lisattava)
 
     def poista_tuote(self, poistettava: Tuote):
         # poistaa tuotteen
@@ -26,4 +28,4 @@ class Ostoskori:
         # tyhjentää ostoskorin
 
     def ostokset(self) -> list[Ostos]:
-        return self.ostos_list
+        return list(self._ostokset.values())
