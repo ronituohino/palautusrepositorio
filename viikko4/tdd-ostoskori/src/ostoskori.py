@@ -12,7 +12,7 @@ class Ostoskori:
         return len(self.ostos_list)
 
     def hinta(self):
-        return 0
+        return sum(ostos.hinta() for ostos in self.ostos_list)
 
     def lisaa_tuote(self, lisattava: Tuote):
         self.ostos_list.append(Ostos(lisattava))
